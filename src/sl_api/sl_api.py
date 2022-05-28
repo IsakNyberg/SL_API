@@ -23,16 +23,16 @@ class StationFinder:
             payload['type'] = self.type
         result = self.s.request(method=method, url=url, params=payload)
         result = result.json(encoding='utf-8')
-        if response['StatusCode'] == 0:
-            response = response['ResponseData']
+        if result['StatusCode'] == 0:
+            result = result['ResponseData']
         else:
-            raise ValueError(response)
+            raise ValueError(result)
 
         return result
 
     def create_station_from_name(self, name, sl_api_key, **kwargs):
         search = self.search_station(name)
-        best_result = search['ResponseData'][0]
+        best_result = search[0]
         print('Found {0} at x:{1} y:{2} id: {3}'.format(
             best_result['Name'],
             best_result['X'],
@@ -80,15 +80,15 @@ class Station:
         method = 'POST'
         url = self.url
         payload = self.format_payoad()
-        response = self.s.request(method=method, url=url, params=payload)
-        response = response.json(encoding='utf-8')
-        self.cashed_request = response
-        if response['StatusCode'] == 0:
-            response = response['ResponseData']
+        result = self.s.request(method=method, url=url, params=payload)
+        result = result.json(encoding='utf-8')
+        self.cashed_request = result
+        if result['StatusCode'] == 0:
+            result = result['ResponseData']
         else:
-            raise ValueError(response)
+            raise ValueError(result)
 
-        return response
+        return result
 
     def get_line(self, line_type):
         if self.cashed_request is None:
