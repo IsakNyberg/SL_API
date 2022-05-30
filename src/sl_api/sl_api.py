@@ -90,11 +90,23 @@ class Station:
 
         return result
 
-    def get_line(self, line_type):
+    def get_line_by_type(self, line_type):
         if self.cashed_request is None:
             raise ValueError('Make request before reading data')
         valid_types = ['Metros','Buses','Trains','Trams','Ships']
         if line_type not in valid_types:
             raise ValueError(f'Invalid travel type {line_type} must be {valid_types}')
 
-        return lenself.cashed_request['ResponseData'][line_type]
+        return self.cashed_request['ResponseData'][line_type]
+
+    def get_line_by_number(self, line_num):
+        line_num = str(line_num)  # make number a string
+        if self.cashed_request is None:
+            raise ValueError('Make request before reading data')
+        valid_types = ['Metros','Buses','Trains','Trams','Ships']
+        res = {}
+        for line_type in valid_types:
+            lines = self.cashed_request['ResponseData'][line_type]
+            res[line_type] = [line for line in lines if line['LineNumber'] == line_num]
+
+        return res
