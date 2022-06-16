@@ -30,15 +30,16 @@ class StationFinder:
 
         return result
 
-    def create_station_from_name(self, name, sl_api_key, **kwargs):
+    def create_station_from_name(self, name, sl_api_key, verbose=True, **kwargs):
         search = self.search_station(name)
         best_result = search[0]
-        print('Found {0} at x:{1} y:{2} id: {3}'.format(
-            best_result['Name'],
-            best_result['X'],
-            best_result['X'],
-            best_result['SiteId'])
-        )
+        if verbose:
+            print('Found {0} at x:{1} y:{2} id: {3}'.format(
+                best_result['Name'],
+                best_result['X'],
+                best_result['Y'],
+                best_result['SiteId'])
+            )
         seiteid = int(best_result['SiteId'])
 
         return Station(sl_api_key, seiteid, **kwargs)
@@ -63,7 +64,7 @@ class Station:
         self.enable_prediction = True
         self.cashed_request = None
 
-    def format_payoad(self):
+    def format_payload(self):
         return {
             'Key': self.key,
             'SiteId': self.seiteid,
@@ -79,7 +80,7 @@ class Station:
     def request(self):
         method = 'POST'
         url = self.url
-        payload = self.format_payoad()
+        payload = self.format_payload()
         result = self.s.request(method=method, url=url, params=payload)
         result = result.json(encoding='utf-8')
         self.cashed_request = result
