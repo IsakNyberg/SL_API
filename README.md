@@ -8,18 +8,15 @@ and from: https://www.trafiklab.se/api/trafiklab-apis/sl/stop-lookup/
 Installation
 ------------
 
-Using pip (TODO):
-
-    pip install 
-
-or using setup.py:
+Manually:
 
     git clone https://github.com/IsakNyberg/SL_API.git
     cd SL_API
-    pip install mypackage
+    pip install .
 
 
 Usage
+------------
 
     >>> import sl_api
     >>> sl_stop_lookup_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
